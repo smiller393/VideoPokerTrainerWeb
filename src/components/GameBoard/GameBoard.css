@@ -1,0 +1,345 @@
+.game-board {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  color: white;
+  padding: 1rem;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.game-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  color: #fbbf24;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-header p {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.game-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.pay-table-button {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pay-table-button:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.keyboard-help {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 450px 1fr 300px;
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.ev-panel {
+  order: 1;
+}
+
+.controls-panel {
+  order: 3;
+}
+
+.left-panel,
+.right-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+  order: 2;
+}
+
+.card-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 2px solid #475569;
+  margin-bottom: 1rem;
+}
+
+.cards-container .current-hand-label,
+.cards-container .original-hand-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.cards-container .cards-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.cards-container > .card {
+  /* Direct child cards get flex layout */
+  flex: none;
+}
+
+.cards-container:not(.original-hand) {
+  /* Current hand container styles */
+  border-color: #059669;
+}
+
+.cards-container.original-hand {
+  /* Original hand container styles */
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.cards-container.original-hand .original-hand-label {
+  color: #fbbf24;
+}
+
+.hand-result {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(5, 150, 105, 0.2);
+  border: 2px solid #059669;
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+.result-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #10b981;
+  margin-bottom: 0.5rem;
+}
+
+.result-payout {
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+.strategy-feedback {
+  background: rgba(251, 191, 36, 0.1);
+  border: 2px solid #fbbf24;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+}
+
+.strategy-feedback h3 {
+  margin: 0 0 1rem 0;
+  color: #fbbf24;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.strategy-feedback p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Tablet responsive */
+@media (max-width: 1400px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .ev-panel {
+    order: 3;
+  }
+  
+  .center-panel {
+    order: 1;
+  }
+  
+  .controls-panel {
+    order: 2;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .game-board {
+    padding: 0.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .game-header {
+    margin-bottom: 0.5rem;
+  }
+  
+  .game-header h1 {
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .game-header p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .game-header-actions {
+    margin-top: 0.5rem;
+    gap: 1rem;
+  }
+  
+  .pay-table-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .keyboard-help {
+    font-size: 0.75rem;
+  }
+  
+  .game-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+    align-items: center;
+  }
+  
+  .center-panel {
+    flex: 1;
+    min-height: 0;
+    justify-content: center;
+    padding-top: 1rem;
+  }
+  
+  .card-area {
+    gap: 0.5rem;
+  }
+  
+  .strategy-feedback {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    max-width: none;
+  }
+  
+  .strategy-feedback h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .strategy-feedback p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .cards-container {
+    gap: 0.25rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cards-container .cards-row {
+    gap: 0.5rem;
+  }
+  
+  .cards-container .current-hand-label,
+  .cards-container .original-hand-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .hand-result {
+    margin: 0;
+    min-width: unset;
+    max-width: unset;
+    padding: 0.75rem;
+  }
+  
+  .result-text {
+    font-size: 1.25rem;
+  }
+  
+  .result-payout {
+    font-size: 0.875rem;
+  }
+  
+  .controls-panel {
+    order: 2;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .ev-panel {
+    order: 3;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .cards-container {
+    padding: 0.5rem;
+    gap: 0.25rem;
+  }
+  
+  .strategy-feedback {
+    padding: 1rem;
+  }
+  
+}

@@ -1,0 +1,225 @@
+.card-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card {
+  width: 100px;
+  height: 140px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.held {
+  border-color: #059669;
+  background: #f0fdf4;
+  transform: translateY(-4px);
+}
+
+.card.disabled {
+  cursor: not-allowed;
+  opacity: 1 !important;
+}
+
+.card-back {
+  background: linear-gradient(45deg, #1e40af, #3b82f6);
+  cursor: default;
+}
+
+.card-pattern {
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.1) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.card-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 8px;
+}
+
+.card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+}
+
+.top-left {
+  top: 8px;
+  left: 8px;
+}
+
+.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  transform: rotate(180deg);
+}
+
+.card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rank {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.suit {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.suit-large {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.red-suit {
+  color: #dc2626;
+}
+
+.black-suit {
+  color: #1f2937;
+}
+
+.held-indicator {
+  background: #059669;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  min-width: 50px;
+}
+
+.strategy-indicator {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px 6px;
+  border-radius: 3px;
+  min-width: 80px;
+}
+
+.strategy-correct {
+  background: #10b981;
+  color: white;
+}
+
+.strategy-should-hold {
+  background: #fbbf24;
+  color: #1f2937;
+}
+
+.strategy-should-discard {
+  background: #ef4444;
+  color: white;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .card {
+    width: 70px;
+    height: 98px;
+  }
+  
+  .rank {
+    font-size: 20px;
+  }
+  
+  .suit {
+    font-size: 12px;
+  }
+  
+  .suit-large {
+    font-size: 20px;
+  }
+  
+  .held-indicator {
+    font-size: 9px;
+    padding: 2px 4px;
+    min-width: 40px;
+  }
+  
+  .strategy-indicator {
+    font-size: 8px;
+    padding: 2px 3px;
+    min-width: 50px;
+  }
+  
+  .card-corner {
+    top: 4px;
+    left: 4px;
+  }
+  
+  .card-corner.bottom-right {
+    bottom: 4px;
+    right: 4px;
+  }
+  
+  .card-content {
+    padding: 4px;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    width: 65px;
+    height: 91px;
+  }
+  
+  .rank {
+    font-size: 18px;
+  }
+  
+  .suit {
+    font-size: 10px;
+  }
+  
+  .suit-large {
+    font-size: 18px;
+  }
+  
+  .held-indicator {
+    font-size: 8px;
+    padding: 1px 3px;
+    min-width: 35px;
+  }
+  
+  .strategy-indicator {
+    font-size: 7px;
+    padding: 1px 2px;
+    min-width: 45px;
+  }
+}

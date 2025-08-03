@@ -93,7 +93,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .cards-container {
@@ -264,7 +264,7 @@
   }
   
   .card-area {
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
   
   .strategy-feedback {

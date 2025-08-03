@@ -14,7 +14,12 @@ class SoundService {
 
   private initAudioContext = () => {
     if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      try {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        console.log('Audio context initialized successfully');
+      } catch (error) {
+        console.warn('Failed to initialize audio context:', error);
+      }
     }
   };
 

@@ -125,8 +125,10 @@ export const GameBoard: React.FC = () => {
         } else {
           setTimeout(() => playCorrectSound(), 100);
         }
+      } else {
+        // Fallback: play card sound for feedback even if EV analysis isn't ready
+        setTimeout(() => playCardSound(), 100);
       }
-      // Note: No sound feedback if EV analysis isn't ready yet
     }
 
     // Update refs

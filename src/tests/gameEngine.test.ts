@@ -62,6 +62,6 @@ describe('Game Engine', () => {
     
     expect(drawnState.gamePhase).toBe('drawn');
     expect(drawnState.lastResult).toBeDefined();
-    expect(drawnState.optimalHolds).toBeDefined();
+    expect(drawnState.optimalHolds).toBeUndefined(); // No longer computed by engine
   });
 });

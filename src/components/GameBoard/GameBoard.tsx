@@ -6,7 +6,7 @@ import { EVGrid } from '@/components/EVGrid/EVGrid';
 import { useGameStore } from '@/hooks/useGameStore';
 import { useSounds } from '@/hooks/useSounds';
 import { getPayoutForHand, JACKS_OR_BETTER_9_6 } from '@/game/payTables';
-import { analyzeAllPlaysAsync, analyzePlayerChoiceOptimized } from '@/game/evCalculatorOptimized';
+import { analyzeAllPlaysAsync } from '@/game/evCalculatorOptimized';
 
 export const GameBoard: React.FC = () => {
   const {
@@ -29,7 +29,7 @@ export const GameBoard: React.FC = () => {
   const prevGamePhaseRef = useRef<string>('initial');
   const prevLastResultRef = useRef<any>(null);
   const [originalHand, setOriginalHand] = useState<any[]>([]);
-  const [isLoadingFullAnalysis, setIsLoadingFullAnalysis] = useState(false);
+  const [, setIsLoadingFullAnalysis] = useState(false);
   const [fullEvAnalysis, setFullEvAnalysis] = useState<any>(null);
   const [actualMistakeMade, setActualMistakeMade] = useState<boolean | null>(null);
   const [actualOptimalHolds, setActualOptimalHolds] = useState<boolean[] | null>(null);
@@ -62,7 +62,7 @@ export const GameBoard: React.FC = () => {
         // Determine actual optimal strategy based on pre-computed EV analysis
         const optimalChoice = preComputedAnalysis.optimalChoice;
         const actualOptimal = optimalChoice.holds;
-        const playerWasOptimal = actualOptimal.every((should, i) => should === heldCards[i]);
+        const playerWasOptimal = actualOptimal.every((should: boolean, i: number) => should === heldCards[i]);
         
         setActualOptimalHolds(actualOptimal);
         setActualMistakeMade(!playerWasOptimal);
@@ -75,7 +75,7 @@ export const GameBoard: React.FC = () => {
             
             const optimalChoice = analysis.optimalChoice;
             const actualOptimal = optimalChoice.holds;
-            const playerWasOptimal = actualOptimal.every((should, i) => should === heldCards[i]);
+            const playerWasOptimal = actualOptimal.every((should: boolean, i: number) => should === heldCards[i]);
             
             setActualOptimalHolds(actualOptimal);
             setActualMistakeMade(!playerWasOptimal);

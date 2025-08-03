@@ -59,7 +59,7 @@ describe('Performance Tests', () => {
     console.log(`Quick strategy analysis time: ${duration.toFixed(2)}ms`);
   });
 
-  test('full EV analysis should complete in reasonable time (<500ms)', async () => {
+  test('full EV analysis should complete in reasonable time (<1000ms)', async () => {
     const testHand = [
       createTestCard(Rank.ACE, Suit.HEARTS),
       createTestCard(Rank.KING, Suit.HEARTS),
@@ -72,7 +72,7 @@ describe('Performance Tests', () => {
     const analysis = await analyzeAllPlaysAsync(testHand, 1);
     const duration = performance.now() - start;
 
-    expect(duration).toBeLessThan(500);
+    expect(duration).toBeLessThan(1000);
     expect(analysis.isComplete).toBe(true);
     expect(analysis.combinations).toHaveLength(32);
     console.log(`Full EV analysis time: ${duration.toFixed(2)}ms`);

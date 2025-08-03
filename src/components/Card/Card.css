@@ -3,8 +3,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 200px; /* Fixed height to prevent layout shift */
-  justify-content: flex-start;
 }
 
 .card {
@@ -113,6 +111,10 @@
 }
 
 .held-indicator {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
   background: #059669;
   color: white;
   padding: 4px 8px;
@@ -121,11 +123,14 @@
   font-weight: bold;
   text-align: center;
   min-width: 50px;
-  margin-top: 0.5rem;
+  white-space: nowrap;
 }
 
 .strategy-indicator {
-  margin-top: 4px;
+  position: absolute;
+  top: calc(100% + 8px); /* Moved even higher */
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 11px;
   font-weight: bold;
   text-align: center;
@@ -151,10 +156,6 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .card-container {
-    height: 160px;
-  }
-  
   .card {
     width: 70px;
     height: 98px;
@@ -200,10 +201,6 @@
 }
 
 @media (max-width: 640px) {
-  .card-container {
-    height: 150px;
-  }
-  
   .card {
     width: 65px;
     height: 91px;

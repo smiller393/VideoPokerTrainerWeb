@@ -3,10 +3,9 @@
   border: 2px solid #475569;
   border-radius: 12px;
   padding: 1.5rem;
-  margin-top: 2rem;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2rem auto 0 auto;
+  width: fit-content;
+  display: block;
 }
 
 .ev-grid-header {
@@ -41,7 +40,7 @@
 
 .ev-grid-headers {
   display: grid;
-  grid-template-columns: 80px 160px 140px;
+  grid-template-columns: 60px 140px 150px;
   background: #374151;
   font-weight: 600;
   color: #f3f4f6;
@@ -49,7 +48,7 @@
 }
 
 .ev-grid-headers > div {
-  padding: 0.75rem 0.5rem;
+  padding: 0.5rem 0.125rem;
   border-right: 1px solid #4b5563;
   text-align: center;
 }
@@ -65,7 +64,7 @@
 
 .ev-grid-row {
   display: grid;
-  grid-template-columns: 80px 160px 140px;
+  grid-template-columns: 60px 140px 150px;
   border-bottom: 1px solid #374151;
   font-size: 0.875rem;
   transition: background-color 0.2s ease;
@@ -86,7 +85,7 @@
 }
 
 .ev-grid-row > div {
-  padding: 0.75rem 0.5rem;
+  padding: 0.5rem 0.125rem;
   border-right: 1px solid #374151;
   color: #e5e7eb;
   display: flex;
@@ -172,6 +171,8 @@
   font-family: 'Courier New', monospace;
   font-weight: 600;
   color: #60a5fa;
+  text-align: center !important;
+  justify-content: center !important;
 }
 
 .payback-cell {
@@ -223,7 +224,7 @@
 
   .ev-grid-headers,
   .ev-grid-row {
-    grid-template-columns: 50px 90px 80px;
+    grid-template-columns: 50px 90px 35px;
     font-size: 0.625rem;
   }
 
@@ -277,7 +278,7 @@
 
   .ev-grid-headers,
   .ev-grid-row {
-    grid-template-columns: 40px 80px 70px;
+    grid-template-columns: 40px 80px 30px;
     font-size: 0.5rem;
   }
 

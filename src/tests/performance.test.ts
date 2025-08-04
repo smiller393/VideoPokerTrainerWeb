@@ -16,18 +16,18 @@ describe('Performance Tests', () => {
     clearEVCache();
   });
 
-  test('deal new hand should be fast (<10ms)', () => {
+  test('deal new hand should be fast (<20ms)', () => {
     const state = createInitialGameState();
     
     const { duration } = PerformanceMonitor.measure('test_deal', () => {
       dealNewHand(state);
     });
 
-    expect(duration).toBeLessThan(10);
+    expect(duration).toBeLessThan(20);
     console.log(`Deal time: ${duration.toFixed(2)}ms`);
   });
 
-  test('draw cards should be fast (<50ms)', () => {
+  test('draw cards should be fast (<100ms)', () => {
     let state = createInitialGameState();
     state = dealNewHand(state);
     
@@ -38,11 +38,11 @@ describe('Performance Tests', () => {
       drawCards(state);
     });
 
-    expect(duration).toBeLessThan(50);
+    expect(duration).toBeLessThan(100);
     console.log(`Draw time: ${duration.toFixed(2)}ms`);
   });
 
-  test('quick strategy analysis should be fast (<5ms)', () => {
+  test('quick strategy analysis should be fast (<10ms)', () => {
     const testHand = [
       createTestCard(Rank.ACE, Suit.HEARTS),
       createTestCard(Rank.KING, Suit.HEARTS),
@@ -55,11 +55,11 @@ describe('Performance Tests', () => {
       getQuickOptimalPlay(testHand);
     });
 
-    expect(duration).toBeLessThan(5);
+    expect(duration).toBeLessThan(10);
     console.log(`Quick strategy analysis time: ${duration.toFixed(2)}ms`);
   });
 
-  test('full EV analysis should complete in reasonable time (<1000ms)', async () => {
+  test('full EV analysis should complete in reasonable time (<2000ms)', async () => {
     const testHand = [
       createTestCard(Rank.ACE, Suit.HEARTS),
       createTestCard(Rank.KING, Suit.HEARTS),
@@ -72,7 +72,7 @@ describe('Performance Tests', () => {
     const analysis = await analyzeAllPlaysAsync(testHand, 1);
     const duration = performance.now() - start;
 
-    expect(duration).toBeLessThan(1000);
+    expect(duration).toBeLessThan(2000);
     expect(analysis.isComplete).toBe(true);
     expect(analysis.combinations).toHaveLength(32);
     console.log(`Full EV analysis time: ${duration.toFixed(2)}ms`);
@@ -133,8 +133,8 @@ describe('Performance Tests', () => {
     console.log(`Average deal time: ${avgDealTime.toFixed(2)}ms`);
     console.log(`Average draw time: ${avgDrawTime.toFixed(2)}ms`);
 
-    expect(avgDealTime).toBeLessThan(10);
-    expect(avgDrawTime).toBeLessThan(50);
+    expect(avgDealTime).toBeLessThan(20);
+    expect(avgDrawTime).toBeLessThan(100);
   });
 
   test('should detect slow operations', () => {

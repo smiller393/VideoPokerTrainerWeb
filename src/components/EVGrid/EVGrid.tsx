@@ -46,11 +46,12 @@ export const EVGrid: React.FC<EVGridProps> = ({ analysis, originalHand, bet }) =
             const rank = index + 1;
             const isPlayer = isPlayerChoice(combo);
             const isOptimal = isOptimalChoice(combo);
+            const isSuboptimalPlayer = isPlayer && !isOptimal;
             
             return (
               <div 
                 key={combo.holds.join('')} 
-                className={`ev-grid-row ${isPlayer ? 'player-choice' : ''} ${isOptimal ? 'optimal-choice' : ''}`}
+                className={`ev-grid-row ${isOptimal ? 'optimal-choice' : ''} ${isSuboptimalPlayer ? 'suboptimal-player-choice' : ''}`}
               >
                 <div className="rank-cell">
                   #{rank}

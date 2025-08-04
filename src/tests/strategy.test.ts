@@ -33,7 +33,7 @@ describe('Strategy Engine', () => {
     
     const analysis = analyzeOptimalStrategy(hand);
     expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-    expect(analysis.explanation).toContain('Keep pair of Js');
+    expect(analysis.explanation).toContain('Keep pair of Jacks');
   });
 
   test('should keep four cards to a royal flush over a low pair', () => {
@@ -61,7 +61,7 @@ describe('Strategy Engine', () => {
     
     const analysis = analyzeOptimalStrategy(hand);
     expect(analysis.optimalHolds).toEqual([true, true, true, false, false]);
-    expect(analysis.explanation).toContain('Keep three 8s');
+    expect(analysis.explanation).toContain('Keep three Eights');
   });
 
   test('should keep two pair', () => {
@@ -89,7 +89,7 @@ describe('Strategy Engine', () => {
     
     const analysis = analyzeOptimalStrategy(hand);
     expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-    expect(analysis.explanation).toContain('Keep pair of Ks');
+    expect(analysis.explanation).toContain('Keep pair of Kings');
   });
 
   test('should keep four cards to a flush', () => {
@@ -117,7 +117,7 @@ describe('Strategy Engine', () => {
     
     const analysis = analyzeOptimalStrategy(hand);
     expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-    expect(analysis.explanation).toContain('Keep pair of 7s');
+    expect(analysis.explanation).toContain('Keep pair of Sevens');
   });
 
   test('should keep two suited high cards', () => {
@@ -321,7 +321,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, true, false, false]);
-      expect(analysis.explanation).toContain('Keep three As');
+      expect(analysis.explanation).toContain('Keep three Aces');
     });
 
     test('should keep three twos', () => {
@@ -335,7 +335,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, true, false, false]);
-      expect(analysis.explanation).toContain('Keep three 2s');
+      expect(analysis.explanation).toContain('Keep three Twos');
     });
   });
 
@@ -352,7 +352,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of Qs');
+      expect(analysis.explanation).toContain('Keep pair of Queens');
     });
 
     test('should keep pair of aces', () => {
@@ -366,7 +366,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of As');
+      expect(analysis.explanation).toContain('Keep pair of Aces');
     });
 
     test('should keep low pair of threes', () => {
@@ -380,7 +380,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of 3s');
+      expect(analysis.explanation).toContain('Keep pair of Threes');
     });
 
     test('should keep low pair of tens', () => {
@@ -394,7 +394,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of 10s');
+      expect(analysis.explanation).toContain('Keep pair of Tens');
     });
   });
 
@@ -439,7 +439,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of 5s');
+      expect(analysis.explanation).toContain('Keep pair of Fives');
     });
 
     test('should keep three to royal flush', () => {
@@ -686,7 +686,7 @@ describe('Strategy Engine', () => {
       const analysis = analyzeOptimalStrategy(hand);
       // This hand has a pair of 8s, not a straight (since there are two 8s)
       expect(analysis.optimalHolds).toEqual([false, false, false, true, true]);
-      expect(analysis.explanation).toContain('Keep pair of 8s');
+      expect(analysis.explanation).toContain('Keep pair of Eights');
     });
 
     test('should prioritize two pair over high pair', () => {
@@ -714,7 +714,7 @@ describe('Strategy Engine', () => {
       
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, false, false, false]);
-      expect(analysis.explanation).toContain('Keep pair of 4s');
+      expect(analysis.explanation).toContain('Keep pair of Fours');
     });
 
     test('should prioritize suited high cards over unsuited', () => {
@@ -789,6 +789,37 @@ describe('Strategy Engine', () => {
       const analysis = analyzeOptimalStrategy(hand);
       expect(analysis.optimalHolds).toEqual([true, true, true, false, false]);
       expect(analysis.explanation).toContain('Keep three cards to a royal flush');
+    });
+  });
+
+  // === NO HOLD TESTS ===
+  describe('No Hold Situations', () => {
+    test('should hold nothing for completely unconnected low cards (2d 3c 5s 7h 8h)', () => {
+      const hand = [
+        createCard(Rank.TWO, Suit.DIAMONDS),
+        createCard(Rank.THREE, Suit.CLUBS),
+        createCard(Rank.FIVE, Suit.SPADES),
+        createCard(Rank.SEVEN, Suit.HEARTS),
+        createCard(Rank.EIGHT, Suit.HEARTS)
+      ];
+      
+      const analysis = analyzeOptimalStrategy(hand);
+      expect(analysis.optimalHolds).toEqual([false, false, false, false, false]);
+      expect(analysis.explanation).toContain('Discard all cards');
+    });
+
+    test('should hold nothing for scattered low cards without flush potential', () => {
+      const hand = [
+        createCard(Rank.TWO, Suit.HEARTS),
+        createCard(Rank.FOUR, Suit.CLUBS),
+        createCard(Rank.SIX, Suit.DIAMONDS),
+        createCard(Rank.EIGHT, Suit.SPADES),
+        createCard(Rank.NINE, Suit.HEARTS)
+      ];
+      
+      const analysis = analyzeOptimalStrategy(hand);
+      expect(analysis.optimalHolds).toEqual([false, false, false, false, false]);
+      expect(analysis.explanation).toContain('Discard all cards');
     });
   });
 

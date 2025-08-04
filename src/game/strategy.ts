@@ -4,6 +4,25 @@ import { evaluateHand } from './handEvaluator';
 const HIGH_CARDS = [Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE];
 const ROYAL_CARDS = [Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE];
 
+function getRankName(rank: Rank): string {
+  switch (rank) {
+    case Rank.ACE: return 'Aces';
+    case Rank.KING: return 'Kings';
+    case Rank.QUEEN: return 'Queens';
+    case Rank.JACK: return 'Jacks';
+    case Rank.TEN: return 'Tens';
+    case Rank.NINE: return 'Nines';
+    case Rank.EIGHT: return 'Eights';
+    case Rank.SEVEN: return 'Sevens';
+    case Rank.SIX: return 'Sixes';
+    case Rank.FIVE: return 'Fives';
+    case Rank.FOUR: return 'Fours';
+    case Rank.THREE: return 'Threes';
+    case Rank.TWO: return 'Twos';
+    default: return `${rank}s`;
+  }
+}
+
 interface StrategyPattern {
   name: string;
   priority: number;
@@ -105,7 +124,7 @@ function checkThreeOfAKind(hand: Card[]): StrategyPattern | null {
         name: 'three_of_a_kind',
         priority: 850,
         holds,
-        explanation: `Keep three ${rank}s`
+        explanation: `Keep three ${getRankName(rank as Rank)}`
       };
     }
   }
@@ -123,7 +142,7 @@ function checkJacksOrBetter(_hand: Card[], result: HandResult): StrategyPattern 
           name: 'jacks_or_better',
           priority: 500,
           holds,
-          explanation: `Keep pair of ${rank}s`
+          explanation: `Keep pair of ${getRankName(rank as Rank)}`
         };
       }
     }
@@ -231,7 +250,7 @@ function checkHighPair(hand: Card[]): StrategyPattern | null {
         name: 'high_pair',
         priority: 500,
         holds,
-        explanation: `Keep pair of ${rank}s`
+        explanation: `Keep pair of ${getRankName(rank as Rank)}`
       };
     }
   }
@@ -294,7 +313,7 @@ function checkLowPair(hand: Card[]): StrategyPattern | null {
         name: 'low_pair',
         priority: 250,
         holds,
-        explanation: `Keep pair of ${rank}s`
+        explanation: `Keep pair of ${getRankName(rank as Rank)}`
       };
     }
   }

@@ -10,6 +10,7 @@ interface CardProps {
   showStrategy?: boolean;
   shouldHold?: boolean;
   playerHeld?: boolean;
+  highlightWinning?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({ 
@@ -20,7 +21,8 @@ export const Card: React.FC<CardProps> = ({
   showBack = false,
   showStrategy = false,
   shouldHold = false,
-  playerHeld = false
+  playerHeld = false,
+  highlightWinning = false
 }) => {
   const getSuitSymbol = (suit: Suit): string => {
     switch (suit) {
@@ -50,7 +52,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div className="card-container">
       <button
-        className={`card card-front ${isHeld ? 'held' : ''} ${disabled ? 'disabled' : ''}`}
+        className={`card card-front ${isHeld ? 'held' : ''} ${disabled ? 'disabled' : ''} ${highlightWinning ? 'winning-highlight' : ''}`}
         onClick={onToggleHold}
         disabled={disabled}
         aria-label={`${card.rank} of ${card.suit}${isHeld ? ' (held)' : ''}`}

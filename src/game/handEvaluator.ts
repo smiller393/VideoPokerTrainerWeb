@@ -18,6 +18,25 @@ const RANK_VALUES: Record<Rank, number> = {
 
 const FACE_CARDS = [Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE];
 
+function getRankName(rank: Rank): string {
+  switch (rank) {
+    case Rank.ACE: return 'Aces';
+    case Rank.KING: return 'Kings';
+    case Rank.QUEEN: return 'Queens';
+    case Rank.JACK: return 'Jacks';
+    case Rank.TEN: return 'Tens';
+    case Rank.NINE: return 'Nines';
+    case Rank.EIGHT: return 'Eights';
+    case Rank.SEVEN: return 'Sevens';
+    case Rank.SIX: return 'Sixes';
+    case Rank.FIVE: return 'Fives';
+    case Rank.FOUR: return 'Fours';
+    case Rank.THREE: return 'Threes';
+    case Rank.TWO: return 'Twos';
+    default: return `${rank}s`;
+  }
+}
+
 export function evaluateHand(cards: Card[]): HandResult {
   if (cards.length !== 5) {
     throw new Error('Hand must contain exactly 5 cards');
@@ -111,14 +130,14 @@ export function evaluateHand(cards: Card[]): HandResult {
         type: HandType.JACKS_OR_BETTER,
         cards: sortedCards,
         rank: 1,
-        description: `Pair of ${pairRank}s`
+        description: `Pair of ${getRankName(pairRank)}`
       };
     }
     return {
       type: HandType.PAIR,
       cards: sortedCards,
       rank: 0,
-      description: `Pair of ${pairRank}s`
+      description: `Pair of ${getRankName(pairRank)}`
     };
   }
   

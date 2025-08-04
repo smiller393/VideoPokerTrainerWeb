@@ -3,10 +3,95 @@ import { Card } from '@/components/Card/Card';
 import { PayTablePopup } from '@/components/PayTablePopup/PayTablePopup';
 import { Controls } from '@/components/Controls/Controls';
 import { EVGrid } from '@/components/EVGrid/EVGrid';
+import { Statistics } from '@/components/Statistics/Statistics';
 import { useGameStore } from '@/hooks/useGameStore';
 import { useSounds } from '@/hooks/useSounds';
+import { useStatistics } from '@/hooks/useStatistics';
 import { getPayoutForHand, JACKS_OR_BETTER_9_6 } from '@/game/payTables';
 import { analyzeAllPlaysAsync } from '@/game/evCalculatorOptimized';
+import { evaluateHand } from '@/game/handEvaluator';
+import { Card as CardType, HandType, Rank } from '@/game/types';
+
+// Helper function to identify which cards are part of the winning hand
+const getWinningCards = (hand: CardType[], handType: HandType): boolean[] => {
+  const winningCards = [false, false, false, false, false];
+  
+  // Get rank counts for pair/trips/quads detection
+  const rankCounts = new Map<string, number[]>();
+  hand.forEach((card, index) => {
+    if (!rankCounts.has(card.rank)) {
+      rankCounts.set(card.rank, []);
+    }
+    rankCounts.get(card.rank)!.push(index);
+  });
+
+  switch (handType) {
+    case HandType.JACKS_OR_BETTER:
+      // Find the pair of Jacks or better
+      for (const [rank, indices] of rankCounts.entries()) {
+        if (indices.length === 2) {
+          const highCardRanks = [Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE];
+          if (highCardRanks.includes(rank as Rank)) {
+            indices.forEach(index => winningCards[index] = true);
+            break;
+          }
+        }
+      }
+      break;
+
+    case HandType.TWO_PAIR:
+      // Find both pairs
+      for (const [, indices] of rankCounts.entries()) {
+        if (indices.length === 2) {
+          indices.forEach(index => winningCards[index] = true);
+        }
+      }
+      break;
+
+    case HandType.THREE_OF_A_KIND:
+      // Find the three of a kind
+      for (const [, indices] of rankCounts.entries()) {
+        if (indices.length === 3) {
+          indices.forEach(index => winningCards[index] = true);
+          break;
+        }
+      }
+      break;
+
+    case HandType.FOUR_OF_A_KIND:
+      // Find the four of a kind
+      for (const [, indices] of rankCounts.entries()) {
+        if (indices.length === 4) {
+          indices.forEach(index => winningCards[index] = true);
+          break;
+        }
+      }
+      break;
+
+    case HandType.FULL_HOUSE:
+      // Find the three of a kind and pair
+      for (const [, indices] of rankCounts.entries()) {
+        if (indices.length === 3 || indices.length === 2) {
+          indices.forEach(index => winningCards[index] = true);
+        }
+      }
+      break;
+
+    // For straights, flushes, straight flushes, and royal flushes, all cards are needed
+    case HandType.STRAIGHT:
+    case HandType.FLUSH:
+    case HandType.STRAIGHT_FLUSH:
+    case HandType.ROYAL_FLUSH:
+      winningCards.fill(true);
+      break;
+
+    default:
+      // No winning cards for other hand types
+      break;
+  }
+  
+  return winningCards;
+};
 
 export const GameBoard: React.FC = () => {
   const {
@@ -26,6 +111,7 @@ export const GameBoard: React.FC = () => {
   } = useGameStore();
 
   const { playWinSound, playCorrectSound, playIncorrectSound, playCardSound } = useSounds();
+  const { statistics, recordDecision, resetStatistics } = useStatistics();
   const prevGamePhaseRef = useRef<string>('initial');
   const prevLastResultRef = useRef<any>(null);
   const [originalHand, setOriginalHand] = useState<any[]>([]);
@@ -35,11 +121,29 @@ export const GameBoard: React.FC = () => {
   const [actualOptimalHolds, setActualOptimalHolds] = useState<boolean[] | null>(null);
   const [preComputedAnalysis, setPreComputedAnalysis] = useState<any>(null);
   const [showPayTable, setShowPayTable] = useState(false);
+  const [dealtWinningHand, setDealtWinningHand] = useState<{type: string, payout: number, winningCards: boolean[]} | null>(null);
 
   // Capture original hand when dealt and start background analysis
   useEffect(() => {
     if (gamePhase === 'dealt' && hand.length === 5) {
       setOriginalHand([...hand]);
+      
+      // Check if we have a winning hand on deal
+      const handResult = evaluateHand(hand);
+      const payout = getPayoutForHand(handResult.type, bet, JACKS_OR_BETTER_9_6);
+      
+      if (payout > 0) {
+        // Play positive chime for winning hand on deal
+        setTimeout(() => playWinSound(), 200);
+        const winningCards = getWinningCards(hand, handResult.type);
+        setDealtWinningHand({ 
+          type: handResult.description, 
+          payout,
+          winningCards 
+        });
+      } else {
+        setDealtWinningHand(null);
+      }
       
       // Start pre-computing EV analysis in background
       analyzeAllPlaysAsync([...hand], bet)
@@ -50,14 +154,25 @@ export const GameBoard: React.FC = () => {
           console.error('Error pre-computing EV analysis:', error);
         });
     }
-  }, [gamePhase, hand, bet]);
+  }, [gamePhase, hand, bet, playWinSound]);
 
   // Use pre-computed analysis when user draws
   useEffect(() => {
     if (gamePhase === 'drawn' && originalHand.length === 5 && !fullEvAnalysis) {
       if (preComputedAnalysis) {
-        // Use pre-computed analysis for instant feedback
-        setFullEvAnalysis(preComputedAnalysis);
+        // Find the player's choice in the analysis
+        const playerChoice = preComputedAnalysis.combinations.find((combo: any) => 
+          combo.holds.every((hold: boolean, index: number) => hold === heldCards[index])
+        );
+        
+        // Update analysis with player choice
+        const analysisWithPlayer = {
+          ...preComputedAnalysis,
+          playerChoice,
+          playerRank: playerChoice ? preComputedAnalysis.combinations.indexOf(playerChoice) + 1 : undefined
+        };
+        
+        setFullEvAnalysis(analysisWithPlayer);
         
         // Determine actual optimal strategy based on pre-computed EV analysis
         const optimalChoice = preComputedAnalysis.optimalChoice;
@@ -66,12 +181,27 @@ export const GameBoard: React.FC = () => {
         
         setActualOptimalHolds(actualOptimal);
         setActualMistakeMade(!playerWasOptimal);
+        
+        // Record the decision for statistics
+        recordDecision(playerWasOptimal);
       } else {
         // Fallback: compute analysis if pre-computation didn't complete
         setIsLoadingFullAnalysis(true);
         analyzeAllPlaysAsync(originalHand, bet)
           .then((analysis) => {
-            setFullEvAnalysis(analysis);
+            // Find the player's choice in the analysis
+            const playerChoice = analysis.combinations.find((combo: any) => 
+              combo.holds.every((hold: boolean, index: number) => hold === heldCards[index])
+            );
+            
+            // Update analysis with player choice
+            const analysisWithPlayer = {
+              ...analysis,
+              playerChoice,
+              playerRank: playerChoice ? analysis.combinations.indexOf(playerChoice) + 1 : undefined
+            };
+            
+            setFullEvAnalysis(analysisWithPlayer);
             
             const optimalChoice = analysis.optimalChoice;
             const actualOptimal = optimalChoice.holds;
@@ -79,6 +209,9 @@ export const GameBoard: React.FC = () => {
             
             setActualOptimalHolds(actualOptimal);
             setActualMistakeMade(!playerWasOptimal);
+            
+            // Record the decision for statistics
+            recordDecision(playerWasOptimal);
             setIsLoadingFullAnalysis(false);
           })
           .catch((error) => {
@@ -96,6 +229,8 @@ export const GameBoard: React.FC = () => {
       setActualMistakeMade(null);
       setActualOptimalHolds(null);
       setPreComputedAnalysis(null);
+    } else if (gamePhase === 'initial') {
+      setDealtWinningHand(null);
     }
   }, [gamePhase]);
 
@@ -183,7 +318,7 @@ export const GameBoard: React.FC = () => {
           >
             Pay Table
           </button>
-          <div className="keyboard-help">
+          <div className="keyboard-help desktop-only">
             <span>Keyboard: 1-5 to hold cards, Space to deal/draw</span>
           </div>
         </div>
@@ -215,6 +350,16 @@ export const GameBoard: React.FC = () => {
                 )}
               </div>
             )}
+
+            {/* Winning hand notification on initial deal */}
+            {gamePhase === 'dealt' && dealtWinningHand && (
+              <div className="winning-hand-notification">
+                <h3>🎉 Congratulations! You were dealt a winning hand!</h3>
+                <p>
+                  <strong>{dealtWinningHand.type}</strong> - Hold the winning cards to win {dealtWinningHand.payout} {dealtWinningHand.payout === 1 ? 'credit' : 'credits'}!
+                </p>
+              </div>
+            )}
             
             <div className="cards-container">
               {gamePhase === 'drawn' ? (
@@ -232,6 +377,7 @@ export const GameBoard: React.FC = () => {
                     showStrategy={false} // No strategy feedback on final hand
                     shouldHold={false}
                     playerHeld={false}
+                    highlightWinning={gamePhase === 'dealt' && dealtWinningHand?.winningCards[index] === true}
                   />
                 ))}
               </div>
@@ -275,6 +421,24 @@ export const GameBoard: React.FC = () => {
           </div>
         </div>
         <div className="controls-panel">
+          {/* Desktop Statistics - shown at top of controls */}
+          <div className="desktop-statistics">
+            <Statistics
+              totalHands={statistics.totalHands}
+              correctDecisions={statistics.correctDecisions}
+              accuracy={statistics.accuracy}
+              onReset={resetStatistics}
+            />
+          </div>
+          {/* Mobile Statistics - shown with controls */}
+          <div className="mobile-statistics">
+            <Statistics
+              totalHands={statistics.totalHands}
+              correctDecisions={statistics.correctDecisions}
+              accuracy={statistics.accuracy}
+              onReset={resetStatistics}
+            />
+          </div>
           <Controls
             credits={credits}
             bet={bet}

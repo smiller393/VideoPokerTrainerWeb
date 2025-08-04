@@ -31,6 +31,22 @@
   transform: translateY(-4px);
 }
 
+.card.winning-highlight {
+  border-color: #fbbf24;
+  background: #fefce8;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+  animation: winning-pulse 2s infinite;
+}
+
+@keyframes winning-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.9);
+  }
+}
+
 .card.disabled {
   cursor: not-allowed;
   opacity: 1 !important;
@@ -81,13 +97,13 @@
 
 .card-center {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .rank {
-  font-size: 24px;
+  font-size: 26px;
   line-height: 1;
   font-weight: bold;
 }
@@ -98,7 +114,7 @@
 }
 
 .suit-large {
-  font-size: 32px;
+  font-size: 40px;
   line-height: 1;
 }
 
@@ -162,7 +178,7 @@
   }
   
   .rank {
-    font-size: 20px;
+    font-size: 22px;
   }
   
   .suit {
@@ -170,7 +186,7 @@
   }
   
   .suit-large {
-    font-size: 20px;
+    font-size: 26px;
   }
   
   .held-indicator {
@@ -207,7 +223,7 @@
   }
   
   .rank {
-    font-size: 18px;
+    font-size: 20px;
   }
   
   .suit {
@@ -215,7 +231,7 @@
   }
   
   .suit-large {
-    font-size: 18px;
+    font-size: 22px;
   }
   
   .held-indicator {

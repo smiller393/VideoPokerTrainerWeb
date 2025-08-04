@@ -3,11 +3,12 @@
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   color: white;
   padding: 1rem;
+  padding-top: 1rem; /* Reset to normal - title should be at top */
 }
 
 .game-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem; /* Reduced margin to keep title closer to top */
 }
 
 .game-header h1 {
@@ -170,7 +171,7 @@
   background: rgba(251, 191, 36, 0.1);
   border: 2px solid #fbbf24;
   border-radius: 12px;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   text-align: center;
   max-width: 600px;
   margin: 0 auto 1.5rem auto;
@@ -178,7 +179,7 @@
 }
 
 .strategy-feedback h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   color: #fbbf24;
   font-size: 1.25rem;
   font-weight: 600;
@@ -191,6 +192,63 @@
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
+}
+
+.winning-hand-notification {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+  border: 2px solid #10b981;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  animation: winning-notification-pulse 3s ease-in-out;
+}
+
+@keyframes winning-notification-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5);
+  }
+}
+
+.winning-hand-notification h3 {
+  margin: 0 0 1rem 0;
+  color: #10b981;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.winning-hand-notification p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.winning-hand-notification strong {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Desktop-only elements */
+.desktop-only {
+  display: block;
+}
+
+/* Desktop Statistics - Position at top of controls column */
+.desktop-statistics {
+  margin-bottom: 1.5rem;
+}
+
+/* Mobile Statistics - Hidden on desktop, shown on mobile */
+.mobile-statistics {
+  display: none;
 }
 
 /* Tablet responsive */
@@ -206,6 +264,7 @@
   
   .center-panel {
     order: 1;
+    min-height: auto; /* Remove fixed height */
   }
   
   .controls-panel {
@@ -213,10 +272,69 @@
   }
 }
 
+/* Medium screen optimizations to prevent scrolling */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .game-board {
+    padding: 0.75rem; /* Reduce overall padding */
+  }
+  
+  .game-header {
+    margin-bottom: 0.5rem; /* Reduce header spacing */
+  }
+  
+  .game-layout {
+    gap: 1rem; /* Reduce gap between sections */
+  }
+  
+  .center-panel {
+    min-height: auto;
+    justify-content: flex-start; /* Don't center vertically */
+  }
+  
+  .card-area {
+    gap: 0.5rem; /* Reduce spacing between card elements */
+  }
+  
+  .cards-container {
+    padding: 1rem; /* Reduce container padding */
+    margin-bottom: 0.5rem; /* Reduce bottom margin */
+    gap: 0.75rem; /* Reduce internal gap */
+  }
+  
+  .strategy-feedback {
+    padding: 0.75rem 1.5rem; /* Reduce strategy feedback padding */
+    margin: 0 auto 1rem auto; /* Reduce bottom margin */
+  }
+  
+  .winning-hand-notification {
+    padding: 1rem 1.5rem; /* Reduce notification padding */
+    margin: 0 auto 1rem auto; /* Reduce bottom margin */
+  }
+  
+  .desktop-statistics {
+    margin-bottom: 1rem; /* Reduce spacing between stats and controls */
+  }
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
+  /* Hide desktop-only elements on mobile */
+  .desktop-only {
+    display: none;
+  }
+  
+  /* Hide desktop statistics on mobile */
+  .desktop-statistics {
+    display: none;
+  }
+  
+  /* Show mobile statistics */
+  .mobile-statistics {
+    display: block;
+  }
   .game-board {
     padding: 0.5rem;
+    padding-top: 0.5rem; /* Reset padding for mobile */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -282,6 +400,22 @@
   }
   
   .strategy-feedback p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .winning-hand-notification {
+    padding: 0.75rem 1rem;
+    margin: 0 0 0.75rem 0;
+    max-width: none;
+  }
+  
+  .winning-hand-notification h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .winning-hand-notification p {
     font-size: 0.875rem;
     margin: 0;
   }

@@ -3,7 +3,9 @@ import { Card } from '@/components/Card/Card';
 import { PayTablePopup } from '@/components/PayTablePopup/PayTablePopup';
 import { Controls } from '@/components/Controls/Controls';
 import { EVGrid } from '@/components/EVGrid/EVGrid';
-import { Statistics } from '@/components/Statistics/Statistics';
+import { MobileStatsBar } from '@/components/MobileStatsBar/MobileStatsBar';
+import { SoundToggle } from '@/components/SoundToggle/SoundToggle';
+import { FloatingStats } from '@/components/FloatingStats/FloatingStats';
 import { useGameStore } from '@/hooks/useGameStore';
 import { useSounds } from '@/hooks/useSounds';
 import { useStatistics } from '@/hooks/useStatistics';
@@ -308,12 +310,27 @@ export const GameBoard: React.FC = () => {
 
   return (
     <div className="game-board">
+      <SoundToggle />
+      <FloatingStats
+        totalHands={statistics.totalHands}
+        correctDecisions={statistics.correctDecisions}
+        accuracy={statistics.accuracy}
+        onReset={resetStatistics}
+      />
+      <MobileStatsBar
+        totalHands={statistics.totalHands}
+        correctDecisions={statistics.correctDecisions}
+        accuracy={statistics.accuracy}
+        credits={credits}
+        onReset={resetStatistics}
+      />
+      
       <div className="game-header">
         <h1>Video Poker Trainer</h1>
         <p>Learn optimal Jacks or Better strategy</p>
         <div className="game-header-actions">
           <button 
-            className="pay-table-button"
+            className="casino-button ghost pay-table-button"
             onClick={() => setShowPayTable(true)}
           >
             Pay Table
@@ -337,17 +354,22 @@ export const GameBoard: React.FC = () => {
         <div className="center-panel">
           <div className="card-area">
             {gamePhase === 'drawn' && fullEvAnalysis && (
-              <div className="strategy-feedback">
-                {actualMistakeMade ? (
-                  <>
-                    <h3>🤔 Not quite optimal this time!</h3>
-                    <p>No worries - check out the suggestions below to see what the math says is best.</p>
-                  </>
-                ) : (
-                  <>
-                    <h3>✅ Correct! Hand well played!</h3>
-                  </>
-                )}
+              <div className={`strategy-feedback ${actualMistakeMade ? 'incorrect' : 'correct'}`}>
+                <div className="feedback-icon">
+                  {actualMistakeMade ? '❌' : '🎉'}
+                </div>
+                <div className="feedback-content">
+                  {actualMistakeMade ? (
+                    <>
+                      <h3>Not quite optimal this time!</h3>
+                      <p>No worries - check out the suggestions below to see what the math says is best.</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3>Correct! Hand well played!</h3>
+                    </>
+                  )}
+                </div>
               </div>
             )}
 
@@ -421,24 +443,6 @@ export const GameBoard: React.FC = () => {
           </div>
         </div>
         <div className="controls-panel">
-          {/* Desktop Statistics - shown at top of controls */}
-          <div className="desktop-statistics">
-            <Statistics
-              totalHands={statistics.totalHands}
-              correctDecisions={statistics.correctDecisions}
-              accuracy={statistics.accuracy}
-              onReset={resetStatistics}
-            />
-          </div>
-          {/* Mobile Statistics - shown with controls */}
-          <div className="mobile-statistics">
-            <Statistics
-              totalHands={statistics.totalHands}
-              correctDecisions={statistics.correctDecisions}
-              accuracy={statistics.accuracy}
-              onReset={resetStatistics}
-            />
-          </div>
           <Controls
             credits={credits}
             bet={bet}

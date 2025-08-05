@@ -1,0 +1,59 @@
+.sound-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem;
+  
+  color: #94a3b8;
+  font-size: 1rem;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.sound-toggle:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.sound-toggle.active {
+  background: rgba(5, 150, 105, 0.8);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10b981;
+}
+
+.sound-toggle.active:hover {
+  background: rgba(5, 150, 105, 0.9);
+  border-color: rgba(16, 185, 129, 0.7);
+}
+
+/* Hide on mobile to avoid clutter */
+@media (max-width: 768px) {
+  .sound-toggle {
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sound-toggle {
+    display: none;
+  }
+}

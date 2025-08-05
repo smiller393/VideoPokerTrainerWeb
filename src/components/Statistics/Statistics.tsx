@@ -43,7 +43,7 @@ export const Statistics: React.FC<StatisticsProps> = ({
       
       {totalHands > 0 && (
         <button 
-          className="reset-button"
+          className="casino-button ghost reset-button"
           onClick={handleReset}
           title="Reset all statistics"
         >

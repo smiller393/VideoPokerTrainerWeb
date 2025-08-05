@@ -6,10 +6,10 @@
 }
 
 .card {
-  width: 100px;
-  height: 140px;
-  border-radius: 8px;
-  border: 2px solid #333;
+  width: clamp(120px, 12vw, 140px);
+  height: clamp(168px, 16.8vw, 196px);
+  border-radius: 16px;
+  border: 4px solid #333;
   background: white;
   display: flex;
   align-items: center;
@@ -17,7 +17,8 @@
   position: relative;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .card:hover:not(.disabled) {
@@ -73,7 +74,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  padding: 8px;
+  padding: 12px;
 }
 
 .card-corner {
@@ -103,19 +104,25 @@
 }
 
 .rank {
-  font-size: 26px;
+  font-size: 38px;
   line-height: 1;
-  font-weight: bold;
+  font-weight: 900;
+  font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .suit {
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.15);
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
 }
 
 .suit-large {
-  font-size: 40px;
+  font-size: 68px;
   line-height: 1;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.25));
 }
 
 .red-suit {
@@ -171,22 +178,47 @@
 }
 
 /* Mobile responsive */
+/* Desktop - large screens */
+@media (min-width: 1600px) {
+  .card {
+    width: 140px;
+    height: 196px;
+  }
+}
+
+/* Desktop - standard screens */
+@media (max-width: 1599px) and (min-width: 1200px) {
+  .card {
+    width: 120px;
+    height: 168px;
+  }
+}
+
+/* Tablet screens */
+@media (max-width: 1199px) and (min-width: 769px) {
+  .card {
+    width: 100px;
+    height: 140px;
+  }
+}
+
+/* Mobile screens */
 @media (max-width: 768px) {
   .card {
-    width: 70px;
-    height: 98px;
+    width: 85px;
+    height: 119px;
   }
   
   .rank {
-    font-size: 22px;
+    font-size: 26px;
   }
   
   .suit {
-    font-size: 12px;
+    font-size: 15px;
   }
   
   .suit-large {
-    font-size: 26px;
+    font-size: 34px;
   }
   
   .held-indicator {
@@ -218,20 +250,20 @@
 
 @media (max-width: 640px) {
   .card {
-    width: 65px;
-    height: 91px;
+    width: 75px;
+    height: 105px;
   }
   
   .rank {
-    font-size: 20px;
+    font-size: 24px;
   }
   
   .suit {
-    font-size: 10px;
+    font-size: 13px;
   }
   
   .suit-large {
-    font-size: 22px;
+    font-size: 28px;
   }
   
   .held-indicator {

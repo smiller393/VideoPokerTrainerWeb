@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useSounds } from '@/hooks/useSounds';
+import React from 'react';
 
 interface ControlsProps {
   credits: number;
@@ -23,14 +22,6 @@ export const Controls: React.FC<ControlsProps> = ({
   const canDeal = gamePhase === 'initial' || gamePhase === 'drawn';
   const canDraw = gamePhase === 'dealt';
   const canChangeBet = gamePhase === 'initial' || gamePhase === 'drawn';
-  
-  const { toggleSound, isSoundEnabled } = useSounds();
-  const [soundEnabled, setSoundEnabled] = useState(isSoundEnabled());
-
-  const handleSoundToggle = () => {
-    const newState = toggleSound();
-    setSoundEnabled(newState);
-  };
 
   const handleBetUp = () => {
     const nextBet = bet >= 5 ? 1 : bet + 1;
@@ -88,16 +79,6 @@ export const Controls: React.FC<ControlsProps> = ({
           disabled={!canDraw}
         >
           🎯 DRAW CARDS
-        </button>
-      </div>
-      
-      <div className="sound-controls">
-        <button
-          className={`casino-button sound-button ${soundEnabled ? 'active' : ''}`}
-          onClick={handleSoundToggle}
-          title={soundEnabled ? 'Disable sound effects' : 'Enable sound effects'}
-        >
-          {soundEnabled ? '🔊' : '🔇'}
         </button>
       </div>
       
